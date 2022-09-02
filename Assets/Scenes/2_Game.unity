@@ -363,7 +363,7 @@ MonoBehaviour:
     _tile: {fileID: 11400000, guid: 95e6f8cc433c6424c9ef1731cae6126f, type: 2}
   _tilemap: {fileID: 1794326311}
   _activePiece: {fileID: 302527040}
-  _spawnPosition: {x: 0, y: 0, z: 0}
+  _spawnPosition: {x: -1, y: 8, z: 0}
 --- !u!114 &302527040
 MonoBehaviour:
   m_ObjectHideFlags: 0
