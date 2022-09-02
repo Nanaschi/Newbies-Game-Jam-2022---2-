@@ -10,6 +10,11 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
     public Vector3Int[] Cells => _cells;
 
     private Vector3Int _piecePosition;
+
+    public Board Board => _board;
+
+    public Vector3Int PiecePosition => _piecePosition;
+
     private TetrominoData _tetrominoData;
 
     public TetrominoData TetrominoData => _tetrominoData;
