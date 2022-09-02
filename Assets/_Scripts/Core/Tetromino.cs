@@ -14,11 +14,17 @@ public enum Tetromino
 }
 
 [Serializable]
-public struct TetrominoData
+public struct TetrominoData //TODO: Make it Scriptable object 
 {
-    public Tetromino _tetromino;
-    public Tile _tile;
+    private Tetromino _tetromino;
+    private Tile _tile;
     private Vector2Int[] _cells;
+
+    public Tetromino Tetromino => _tetromino;
+
+    public Tile Tile => _tile;
+
+    public Vector2Int[] Cells => _cells;
 
     public void Initialize()
     {
