@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 302527038}
   - component: {fileID: 302527037}
   - component: {fileID: 302527039}
+  - component: {fileID: 302527040}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -360,6 +361,19 @@ MonoBehaviour:
     _tile: {fileID: 11400000, guid: 11b935eed86ab2a49a8e4840d83d0c08, type: 2}
   - _tetromino: 4
     _tile: {fileID: 11400000, guid: 95e6f8cc433c6424c9ef1731cae6126f, type: 2}
+  _tilemap: {fileID: 0}
+--- !u!114 &302527040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302527036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d8638eca89bde74d8a5faa91a59200a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &335381344
 GameObject:
   m_ObjectHideFlags: 0
