@@ -28,8 +28,14 @@ public struct TetrominoData //TODO: Make it Scriptable object
     private Vector2Int[] _cells;
     public Vector2Int[] Cells => _cells;
 
+
+    private Vector2Int[,] _wallKicks;
+
+    public Vector2Int[,] WallKicks => _wallKicks;
+
     public void Initialize()
     {
         _cells = Data.Cells[_tetromino];
+        _wallKicks = Data.WallKicks[Tetromino];
     }
 }

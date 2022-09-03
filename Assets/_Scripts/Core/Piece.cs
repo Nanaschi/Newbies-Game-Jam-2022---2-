@@ -52,9 +52,23 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
 
     private void Rotate(int direction)
     {
+        int originalRotation = _rotationIndex;
+        
         float[] matrix = Data.RotationMatrix;
+        
         _rotationIndex = Wrap(_rotationIndex + direction, 0, 4);
 
+        ApplyRotationMatrix(direction, matrix);
+
+        if (!TestWallKicks(_rotationIndex, direction))
+        {
+            _rotationIndex = originalRotation;
+            ApplyRotationMatrix(-direction, matrix);
+        }
+    }
+
+    private void ApplyRotationMatrix(int direction, float[] matrix)
+    {
         for (int i = 0; i < _cells.Length; i++)
         {
             Vector3 cell = _cells[i];
@@ -76,16 +90,40 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
                 default:
                     //common logic
                     x = Mathf.RoundToInt((cell.x * matrix[0] * direction) +
-                                        (cell.y * matrix[1] * direction));
+                                         (cell.y * matrix[1] * direction));
                     y = Mathf.RoundToInt((cell.x * matrix[2] * direction) +
-                                        (cell.y * matrix[3] * direction));
+                                         (cell.y * matrix[3] * direction));
 
                     break;
             }
 
-
             _cells[i] = new Vector3Int(x, y, 0);
         }
+    }
+
+    private void ApplyRotationMatrix()
+    {
+        
+    }
+
+
+    public bool TestWallKicks(int rotationIndex, int rotationDirection)
+    {
+        var getWallKickIndex = GetWallKickIndex(rotationIndex, rotationDirection);
+        for (int i = 0; i < _tetrominoData.WallKicks.GetLength(1); i++)
+        {
+            var tetrominoDataWallKick = _tetrominoData.WallKicks[getWallKickIndex, i];
+            if (Move(tetrominoDataWallKick)) return true;
+        }
+
+        return false;
+    }
+
+    public int GetWallKickIndex(int rotationIndex, int rotationDirection)
+    {
+        int wallKickIndex = rotationIndex * 2;
+        if (rotationDirection < 0) wallKickIndex--;
+        return Wrap(wallKickIndex, 0, _tetrominoData.WallKicks.GetLength(0));
     }
 
     private void MoveLogic()
@@ -114,12 +152,15 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
 
         return valid;
     }
-    
+
     public int Wrap(int input, int min, int max)
     {
-        if (input < min) {
+        if (input < min)
+        {
             return max - (min - input) % (max - min);
-        } else {
+        }
+        else
+        {
             return min + (input - min) % (max - min);
         }
     }
