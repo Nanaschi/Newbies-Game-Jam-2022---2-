@@ -37,16 +37,16 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
     {
         _board.Clear(this);
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Move(Vector2Int.left);
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            Move(Vector2Int.right);
-        }
-
+        if (Input.GetKeyDown(KeyCode.A)) Move(Vector2Int.left);
+        else if (Input.GetKeyDown(KeyCode.D)) Move(Vector2Int.right);
+        if (Input.GetKeyDown(KeyCode.S)) Move(Vector2Int.down);
+        if (Input.GetKeyDown(KeyCode.Space)) HardDrop();
         _board.Set(this);
+    }
+
+    private void HardDrop()
+    {
+        while (Move(Vector2Int.down)) continue;
     }
 
     private bool Move(Vector2Int translation)

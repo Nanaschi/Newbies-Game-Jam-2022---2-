@@ -6,11 +6,13 @@ using UnityEngine.Tilemaps;
 
 public enum Tetromino 
 {
-    Straight,
-    Square,
-    TShape,
-    LShape,
-    Skew
+    I,
+    J,
+    L,
+    O,
+    S,
+    T,
+    Z
 }
 
 [Serializable]
