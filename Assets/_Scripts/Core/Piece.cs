@@ -8,7 +8,7 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
 {
     private Board _board;
     private Vector3Int[] _cells;
-    private int _currentIndex;
+    private int _rotationIndex;
     public Vector3Int[] Cells => _cells;
 
     private Vector3Int _position;
@@ -40,7 +40,7 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
 
         RotateLogic();
         MoveLogic();
-        
+
         _board.Set(this);
     }
 
@@ -52,23 +52,39 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
 
     private void Rotate(int direction)
     {
-        _currentIndex += direction;
-        _currentIndex.Wrap(0, 4);
+        float[] matrix = Data.RotationMatrix;
+        _rotationIndex = Wrap(_rotationIndex + direction, 0, 4);
 
         for (int i = 0; i < _cells.Length; i++)
         {
             Vector3 cell = _cells[i];
+
+            int x, y;
 
             switch (_tetrominoData.Tetromino)
             {
                 case (Tetromino.I):
                 case (Tetromino.O):
                     //.5f logic
-                break;
+                    cell.x -= 0.5f;
+                    cell.y -= 0.5f;
+                    x = Mathf.CeilToInt((cell.x * matrix[0] * direction) +
+                                        (cell.y * matrix[1] * direction));
+                    y = Mathf.CeilToInt((cell.x * matrix[2] * direction) +
+                                        (cell.y * matrix[3] * direction));
+                    break;
                 default:
                     //common logic
-                break;
+                    x = Mathf.RoundToInt((cell.x * matrix[0] * direction) +
+                                        (cell.y * matrix[1] * direction));
+                    y = Mathf.RoundToInt((cell.x * matrix[2] * direction) +
+                                        (cell.y * matrix[3] * direction));
+
+                    break;
             }
+
+
+            _cells[i] = new Vector3Int(x, y, 0);
         }
     }
 
@@ -97,5 +113,14 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
         }
 
         return valid;
+    }
+    
+    public int Wrap(int input, int min, int max)
+    {
+        if (input < min) {
+            return max - (min - input) % (max - min);
+        } else {
+            return min + (input - min) % (max - min);
+        }
     }
 }
