@@ -14,7 +14,7 @@ public class Board : MonoBehaviour
     {
         get
         {
-            var position = new Vector2Int(-_boardSize.x/2, -_boardSize.y / 2);
+            var position = new Vector2Int(-_boardSize.x, -_boardSize.y)/2;
             return new RectInt(position, _boardSize);
         }
     }
@@ -62,6 +62,7 @@ public class Board : MonoBehaviour
     public bool IsValidPosition(Piece piece, Vector3Int vector3Int)
     {
         var bounds = Bounds;
+        
         foreach (var cell in piece.Cells)
         {
             var tilePosition = cell + vector3Int;

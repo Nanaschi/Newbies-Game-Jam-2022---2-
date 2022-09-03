@@ -39,12 +39,10 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            print("left");
             Move(Vector2Int.left);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            print("right");
             Move(Vector2Int.right);
         }
 
@@ -54,13 +52,11 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
     private bool Move(Vector2Int translation)
     {
         var newPosition = _position;
-        newPosition.x +=  translation.x;
-        newPosition.y +=  translation.y;
+        newPosition += (Vector3Int) translation;
 
         var valid = _board.IsValidPosition(this, newPosition);
         if (valid)
         {
-            print("is valid");
             _position = newPosition;
         }
 
