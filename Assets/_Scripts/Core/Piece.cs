@@ -7,12 +7,16 @@ using UnityEngine;
 public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
 {
     private Board _board;
-    private Vector3Int[] _cells;
+
     private int _rotationIndex;
+    private Vector3Int[] _cells;
     public Vector3Int[] Cells => _cells;
 
     private Vector3Int _position;
 
+    public Vector3Int Position => _position;
+    
+    
     [SerializeField] private float _stepDelay;
     [SerializeField] private float _lockDelay;
 
@@ -22,7 +26,6 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
 
     public Board Board => _board;
 
-    public Vector3Int Position => _position;
 
     private TetrominoData _tetrominoData;
 
@@ -64,7 +67,7 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
         _stepTime = Time.time + _stepDelay;
 
         Move(Vector2Int.down);
-        
+
         if (_lockTime <= _lockDelay) return;
 
         LockPiece();

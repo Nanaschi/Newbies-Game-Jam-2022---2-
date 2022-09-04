@@ -10,6 +10,8 @@ public class Board : MonoBehaviour
     [SerializeField] private Vector3Int _spawnPosition;
     private Vector2Int _boardSize = new Vector2Int(10, 20);
 
+    public Vector2Int BoardSize => _boardSize;
+
     RectInt Bounds
     {
         get
@@ -39,7 +41,22 @@ public class Board : MonoBehaviour
 
         _activePiece.Initialize(this, _spawnPosition, spawnedTetromino); //TODO: interdependence 
 
-        Set(_activePiece);
+
+        if (IsValidPosition(_activePiece, _spawnPosition))
+        {
+            Set(_activePiece);
+        }
+        else
+        {
+            GameOver();
+        }
+        
+
+    }
+
+    private void GameOver()
+    {
+        _tilemap.ClearAllTiles();
     }
 
     public void Set(Piece piece)
