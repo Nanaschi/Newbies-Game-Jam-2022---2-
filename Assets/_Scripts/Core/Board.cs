@@ -14,10 +14,11 @@ public class Board : MonoBehaviour
     {
         get
         {
-            var position = new Vector2Int(-_boardSize.x, -_boardSize.y)/2;
+            var position = new Vector2Int(-_boardSize.x, -_boardSize.y) / 2;
             return new RectInt(position, _boardSize);
         }
     }
+
     private void Awake()
     {
         for (var i = 0; i < _tetrominoData.Length; i++)
@@ -62,15 +63,63 @@ public class Board : MonoBehaviour
     public bool IsValidPosition(Piece piece, Vector3Int vector3Int)
     {
         var bounds = Bounds;
-        
+
         foreach (var cell in piece.Cells)
         {
             var tilePosition = cell + vector3Int;
-            if(_tilemap.HasTile(tilePosition) ||
-               !bounds.Contains((Vector2Int) tilePosition)) 
+            if (_tilemap.HasTile(tilePosition) || !bounds.Contains((Vector2Int) tilePosition))
                 return false;
         }
 
+        return true;
+    }
+
+    public void ClearLines()
+    {
+        var boardBounds = Bounds;
+        int rowCheck = boardBounds.yMin;
+
+
+        while (rowCheck < boardBounds.yMax)
+        {
+            if (IsLineFull(rowCheck)) LineClear(rowCheck);
+            else rowCheck++;
+        }
+    }
+
+    private void LineClear(int row)
+    {
+        var boardBounds = Bounds;
+        for (int i = boardBounds.xMin; i < boardBounds.xMax; i++)
+        {
+            var position = new Vector3Int(i, row, 0);
+            _tilemap.SetTile(position, null);
+        }
+
+        while (row < boardBounds.yMax)
+        {
+            for (int i = boardBounds.xMin; i < boardBounds.xMax; i++)
+            {
+                var position = new Vector3Int(i, row + 1, 0);
+                var tileBaseAbove = _tilemap.GetTile(position);
+                
+                position = new Vector3Int(i, row , 0);
+                _tilemap.SetTile(position, tileBaseAbove);
+            }
+
+            row++;
+        }
+    }
+
+
+    private bool IsLineFull(int row)
+    {
+        var boardBounds = Bounds;
+        for (int i = boardBounds.xMin; i < boardBounds.xMax; i++)
+        {
+            var position = new Vector3Int(i, row, 0);
+            if(!_tilemap.HasTile(position)) return false;
+        }
         return true;
     }
 }

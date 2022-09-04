@@ -73,6 +73,7 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
     private void LockPiece()
     {
         _board.Set(this);
+        _board.ClearLines();
         _board.SpawnPiece();
     }
 
