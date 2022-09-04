@@ -31,7 +31,7 @@ public class Board : MonoBehaviour
         SpawnPiece();
     }
 
-    private void SpawnPiece()
+    public void SpawnPiece()
     {
         var spawnedNumber = Random.Range(0, _tetrominoData.Length);
         var spawnedTetromino = _tetrominoData[spawnedNumber];

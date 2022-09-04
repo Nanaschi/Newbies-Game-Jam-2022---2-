@@ -13,6 +13,13 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
 
     private Vector3Int _position;
 
+    [SerializeField] private float _stepDelay;
+    [SerializeField] private float _lockDelay;
+
+    private float _stepTime;
+    private float _lockTime;
+
+
     public Board Board => _board;
 
     public Vector3Int Position => _position;
@@ -27,6 +34,8 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
         _position = position;
         _board = board;
         _cells ??= new Vector3Int[tetrominoData.Cells.Length];
+        _stepTime = Time.time + _stepDelay;
+        _lockTime = 0;
 
         for (int i = 0; i < tetrominoData.Cells.Length; i++)
         {
@@ -38,10 +47,33 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
     {
         _board.Clear(this);
 
+        _lockTime += Time.deltaTime;
+
         RotateLogic();
         MoveLogic();
+        StepLogic();
+
 
         _board.Set(this);
+    }
+
+    private void StepLogic()
+    {
+        if (Time.time <= _stepTime) return;
+
+        _stepTime = Time.time + _stepDelay;
+
+        Move(Vector2Int.down);
+        
+        if (_lockTime <= _lockDelay) return;
+
+        LockPiece();
+    }
+
+    private void LockPiece()
+    {
+        _board.Set(this);
+        _board.SpawnPiece();
     }
 
     private void RotateLogic()
@@ -53,9 +85,9 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
     private void Rotate(int direction)
     {
         int originalRotation = _rotationIndex;
-        
+
         float[] matrix = Data.RotationMatrix;
-        
+
         _rotationIndex = Wrap(_rotationIndex + direction, 0, 4);
 
         ApplyRotationMatrix(direction, matrix);
@@ -101,11 +133,6 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
         }
     }
 
-    private void ApplyRotationMatrix()
-    {
-        
-    }
-
 
     public bool TestWallKicks(int rotationIndex, int rotationDirection)
     {
@@ -137,6 +164,7 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
     private void HardDrop()
     {
         while (Move(Vector2Int.down)) continue;
+        LockPiece();
     }
 
     private bool Move(Vector2Int translation)
@@ -148,6 +176,7 @@ public class Piece : MonoBehaviour //TODO: Make it non-monobehaviour
         if (valid)
         {
             _position = newPosition;
+            _lockTime = 0;
         }
 
         return valid;
